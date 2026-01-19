@@ -36,6 +36,13 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts: ^7.0.2
 
+
+
+
+  shared_preferences: ^2.5.4
+  pdf: ^3.10.7
+  path_provider: ^2.1.2
+  open_file: ^3.3.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -76,8 +83,10 @@ flutter:
   # example:
   # fonts:
   #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/static/Cairo-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

@@ -4,7 +4,6 @@ import 'package:al_farouq_factory/ui/dashboard/Dashboard_Screen.dart';
 import 'package:al_farouq_factory/ui/employee/employee_screen.dart';
 import 'package:al_farouq_factory/ui/expenses/Expenses_Screen.dart';
 import 'package:al_farouq_factory/ui/inventory/Inventory_Screen.dart';
-import 'package:al_farouq_factory/ui/invoice/Invoices_Screen.dart';
 import 'package:al_farouq_factory/utils/app_Styles.dart';
 import 'package:al_farouq_factory/widget/tab_event_widget.dart';
 import 'package:flutter/material.dart';
@@ -56,16 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
         screen: ExpensesScreen(),
         imagePath: 'assets/elfarouk.png',
       ),
-      HomeItem(
-        title: 'الفواتير',
-        icon: Icons.receipt_long,
-        screen: InvoicesScreen(),
-        imagePath: 'assets/elfarouk.png',
-      ),
+
       HomeItem(
         title: 'الدخل الشهري',
         icon: Icons.bar_chart,
-        screen: DashboardScreen(),
+
+        screen: MonthlyIncomeScreen(),
         imagePath: 'assets/elfarouk.png',
       ),
     ];
