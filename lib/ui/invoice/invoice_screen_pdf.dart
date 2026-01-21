@@ -97,10 +97,11 @@ class InvoicePdfService {
                 pw.Align(
                   alignment: pw.Alignment.centerRight,
                   child: pw.Text(
-                    'الإجمالي الكلي: ${invoice.total.toStringAsFixed(2)}',
+                    'الإجمالي الكلي: ${invoice.totalAmount.toStringAsFixed(2)}',
                     style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold, font: ttf),
                   ),
                 ),
+
               ],
             ),
           );

@@ -29,7 +29,8 @@ class InvoiceCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("عدد الأصناف: ${invoice.items.length}"),
-            Text("إجمالي المبلغ: ${invoice.total.toStringAsFixed(2)}"),
+            Text("إجمالي المبلغ: ${invoice.totalAmount
+                .toStringAsFixed(2)}"),
             Row(
               children: [
                 IconButton(

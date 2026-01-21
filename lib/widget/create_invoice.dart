@@ -49,14 +49,9 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
   Future<void> saveInvoice({required double paidAmount, bool isReturn = false}) async {
     if (items.isEmpty) return;
 
-    // 1. إجمالي الفاتورة الفعلي (مثلاً 100)
     final double invoiceTotal = total;
 
-    // 2. حساب المتبقي (الذي سيتحول لمديونية)
-    // لو الفاتورة بـ 100 والعميل دفع 40، يبقى المتبقي 60
-    final double remainingDebt = (invoiceTotal - paidAmount).clamp(0.0, double.infinity);
-
-    // 3. حفظ الفاتورة في السجل (كبيانات فقط)
+    // حفظ الفاتورة في السجل العام للفواتير
     await InvoiceService.createInvoice(
       client: widget.client,
       items: items,
@@ -64,32 +59,38 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
     );
 
     if (isReturn) {
-      // في حالة المرتجع:
-      // paidAmount هنا هي الفلوس اللي رجعت للعميل كاش
-      // remainingDebt هي القيمة اللي هتتخصم من مديونيته
+      // --- في حالة المرتجع ---
+      // invoiceTotal: هو إجمالي قيمة البضاعة اللي رجعت
+      // paidAmount: هو لو أنت طلعت فلوس كاش من جيبك للعميل (غالباً هتكون 0 لو هتخصم من دينه)
       await StorageService.registerInvoiceReturn(
         clientName: widget.client.name,
-        paidReturn: paidAmount,
-        debtReturn: remainingDebt,
+        returnTotalValue: invoiceTotal, // دي اللي هتتخصم من مديونيته
+        cashReturnedToClient: paidAmount, // دي اللي هتسمع في المصاريف لو دفعتله كاش
+        note: 'مرتجع أصناف من العميل ${widget.client.name}',
       );
     } else {
-      // في حالة البيع (هنا حل مشكلة الـ 150):
+      // --- في حالة البيع ---
+      // invoiceTotal هو إجمالي الفاتورة
+      // paidAmount هو اللي دفعه كاش (يسمع في الدخل)
+      // المتبقي (remainingDebt) هو اللي هيزيد على مديونيته
+      final double remainingDebt = (invoiceTotal - paidAmount).clamp(0.0, double.infinity);
+
       await StorageService.registerInvoicePayment(
         clientName: widget.client.name,
-        paidAmount: paidAmount,   // نرسل الـ 50 جنيه (الدفع الفعلي) لتروح للدخل
-        debtAmount: remainingDebt, // نرسل الـ 50 جنيه (الباقي) لتروح للمديونية
-        note: 'فاتورة للعميل ${widget.client.name}',
+        paidAmount: paidAmount,   // الفلوس اللي مسكتها في إيدك
+        debtAmount: remainingDebt, // الشكك اللي هيزيد عليه
+        note: 'فاتورة مبيعات للعميل ${widget.client.name}',
       );
     }
 
-    // تحديث واجهة المستخدم
+    // تحديث البيانات في الشاشة
     await loadClientDebt();
     setState(() {
       items.clear();
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('تمت العملية بنجاح')),
+      const SnackBar(content: Text('تمت العملية بنجاح وتحديث الحسابات')),
     );
   }
 
@@ -163,7 +164,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
       clientName: widget.client.name,
       date: DateTime.now(),
       items: List.from(items),
-      total: total,
+
     );
     await InvoicePdfService.generate(invoice);
   }
@@ -174,9 +175,9 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
       appBar: AppBar(
         title: Text('فاتورة: ${widget.client.name}'),
         actions: [
-          IconButton(icon: const Icon(Icons.print), onPressed: printInvoicePdf),
+
           IconButton(icon: const Icon(Icons.save), onPressed: () => showPaymentDialog(isReturn: false)),
-          IconButton(icon: const Icon(Icons.undo), onPressed: () => showPaymentDialog(isReturn: true)),
+
         ],
       ),
       body: Column(

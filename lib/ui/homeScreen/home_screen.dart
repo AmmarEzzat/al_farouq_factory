@@ -1,4 +1,5 @@
 import 'package:al_farouq_factory/model/home_item.dart';
+import 'package:al_farouq_factory/sales/sales_screen.dart';
 import 'package:al_farouq_factory/ui/Customer_Screen/Customer_Screen.dart';
 import 'package:al_farouq_factory/ui/dashboard/Dashboard_Screen.dart';
 import 'package:al_farouq_factory/ui/employee/employee_screen.dart';
@@ -55,7 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
         screen: ExpensesScreen(),
         imagePath: 'assets/elfarouk.png',
       ),
-
+      HomeItem(
+        title: 'المبيعات',
+        icon: Icons.point_of_sale, // أيقونة مناسبة للمبيعات
+        screen: SalesScreen(),
+        imagePath: 'assets/elfarouk.png',
+      ),
       HomeItem(
         title: 'الدخل الشهري',
         icon: Icons.bar_chart,
