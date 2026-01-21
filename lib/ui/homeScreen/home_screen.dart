@@ -1,10 +1,10 @@
 import 'package:al_farouq_factory/model/home_item.dart';
+import 'package:al_farouq_factory/sales/sales_screen.dart';
 import 'package:al_farouq_factory/ui/Customer_Screen/Customer_Screen.dart';
 import 'package:al_farouq_factory/ui/dashboard/Dashboard_Screen.dart';
 import 'package:al_farouq_factory/ui/employee/employee_screen.dart';
 import 'package:al_farouq_factory/ui/expenses/Expenses_Screen.dart';
 import 'package:al_farouq_factory/ui/inventory/Inventory_Screen.dart';
-import 'package:al_farouq_factory/ui/invoice/Invoices_Screen.dart';
 import 'package:al_farouq_factory/utils/app_Styles.dart';
 import 'package:al_farouq_factory/widget/tab_event_widget.dart';
 import 'package:flutter/material.dart';
@@ -57,15 +57,16 @@ class _HomeScreenState extends State<HomeScreen> {
         imagePath: 'assets/elfarouk.png',
       ),
       HomeItem(
-        title: 'الفواتير',
-        icon: Icons.receipt_long,
-        screen: InvoicesScreen(),
+        title: 'المبيعات',
+        icon: Icons.point_of_sale, // أيقونة مناسبة للمبيعات
+        screen: SalesScreen(),
         imagePath: 'assets/elfarouk.png',
       ),
       HomeItem(
         title: 'الدخل الشهري',
         icon: Icons.bar_chart,
-        screen: DashboardScreen(),
+
+        screen: MonthlyIncomeScreen(),
         imagePath: 'assets/elfarouk.png',
       ),
     ];
